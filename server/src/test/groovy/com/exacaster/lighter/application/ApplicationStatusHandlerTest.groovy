@@ -35,7 +35,7 @@ class ApplicationStatusHandlerTest extends Specification {
         def transformation = new Function<ApplicationInfo, ApplicationInfo>() {
             @Override
             ApplicationInfo apply(ApplicationInfo info) {
-                return new ApplicationInfo(SessionUtils.adjustState(false, info.state()), info.applicationId())
+                return new ApplicationInfo(SessionUtils.adjustState(false, info.state()), info.applicationId(), info.sparkUiUrl())
             }
         }
 
@@ -43,7 +43,7 @@ class ApplicationStatusHandlerTest extends Specification {
         application = storage.saveApplication(application)
 
         when:
-        1 * backend.getInfo(application) >> Optional.of(new ApplicationInfo(ApplicationState.BUSY, "we"))
+        1 * backend.getInfo(application) >> Optional.of(new ApplicationInfo(ApplicationState.BUSY, "we", null))
 
         handler.processApplicationRunning(application, transformation)
         def updated = storage.findApplication(application.id).get()
@@ -53,7 +53,7 @@ class ApplicationStatusHandlerTest extends Specification {
         updated.appId == "we"
 
         when:
-        1 * backend.getInfo(application) >> Optional.of(new ApplicationInfo(ApplicationState.KILLED, "we"))
+        1 * backend.getInfo(application) >> Optional.of(new ApplicationInfo(ApplicationState.KILLED, "we", null))
         handler.processApplicationRunning(application, transformation)
         updated = storage.findApplication(application.id).get()
 
@@ -67,7 +67,7 @@ class ApplicationStatusHandlerTest extends Specification {
         application = storage.saveApplication(application)
 
         when:
-        1 * backend.getInfo(application) >> Optional.of(new ApplicationInfo(ApplicationState.BUSY, "we"))
+        1 * backend.getInfo(application) >> Optional.of(new ApplicationInfo(ApplicationState.BUSY, "we", null))
         handler.processApplicationError(application, new RuntimeException("Foooo"))
         def updated = storage.findApplication(application.id).get()
 
@@ -96,7 +96,7 @@ class ApplicationStatusHandlerTest extends Specification {
         application = storage.saveApplication(application)
 
         when:
-        1 * backend.getInfo(application) >> Optional.of(new ApplicationInfo(ApplicationState.BUSY, "we"))
+        1 * backend.getInfo(application) >> Optional.of(new ApplicationInfo(ApplicationState.BUSY, "we", null))
         def returnedState = handler.processApplicationRunning(application)
         def updated = storage.findApplication(application.id).get()
 

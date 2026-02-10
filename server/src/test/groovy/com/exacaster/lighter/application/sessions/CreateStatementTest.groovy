@@ -45,7 +45,7 @@ class CreateStatementTest extends Specification {
         storage.saveApplication(session)
 
         and: "session 'live' status"
-        backend.getInfo(session) >>  Optional.of( new ApplicationInfo(liveState, session.id))
+        backend.getInfo(session) >>  Optional.of( new ApplicationInfo(liveState, session.id, null))
 
         when: "creating statement"
         service.createStatement(session.id, params)
@@ -76,7 +76,7 @@ class CreateStatementTest extends Specification {
         storage.saveApplication(session)
 
         and: "session 'live' status is not completed "
-        backend.getInfo(session) >>  Optional.of( new ApplicationInfo(session.state, session.id))
+        backend.getInfo(session) >>  Optional.of( new ApplicationInfo(session.state, session.id, null))
         def statementCreated = statement()
         statementHandler.processStatement(session.id, statementToCreate) >> statementCreated
 
