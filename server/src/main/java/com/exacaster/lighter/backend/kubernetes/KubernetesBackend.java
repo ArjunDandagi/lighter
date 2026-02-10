@@ -99,7 +99,7 @@ public class KubernetesBackend implements Backend {
     public Optional<ApplicationInfo> getInfo(Application application) {
         var internalApplicationId = application.getId();
         return getDriverPod(internalApplicationId).map(pod -> new ApplicationInfo(mapStatus(pod.getStatus()),
-                pod.getMetadata().getLabels().get(SPARK_APP_ID_LABEL)));
+                pod.getMetadata().getLabels().get(SPARK_APP_ID_LABEL), null));
     }
 
     @Override

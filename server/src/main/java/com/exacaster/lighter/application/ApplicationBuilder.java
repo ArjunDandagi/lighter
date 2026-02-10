@@ -9,6 +9,7 @@ public class ApplicationBuilder {
     private ApplicationState state;
     private String appId;
     private String appInfo;
+    private String sparkUiUrl;
     private SubmitParams submitParams;
     private LocalDateTime createdAt;
     private LocalDateTime contactedAt;
@@ -23,6 +24,7 @@ public class ApplicationBuilder {
         var builder = new ApplicationBuilder();
         builder.setAppId(batch.getAppId());
         builder.setAppInfo(batch.getAppInfo());
+        builder.setSparkUiUrl(batch.getSparkUiUrl());
         builder.setSubmitParams(batch.getSubmitParams());
         builder.setState(batch.getState());
         builder.setType(batch.getType());
@@ -63,6 +65,11 @@ public class ApplicationBuilder {
         return this;
     }
 
+    public ApplicationBuilder setSparkUiUrl(String sparkUiUrl) {
+        this.sparkUiUrl = sparkUiUrl;
+        return this;
+    }
+
     public ApplicationBuilder setSubmitParams(SubmitParams submitParams) {
         this.submitParams = submitParams;
         return this;
@@ -89,6 +96,6 @@ public class ApplicationBuilder {
     }
 
     public Application build() {
-        return new Application(id, type, state, appId, appInfo, submitParams, createdAt, contactedAt, finishedAt, deleted);
+        return new Application(id, type, state, appId, appInfo, sparkUiUrl, submitParams, createdAt, contactedAt, finishedAt, deleted);
     }
 }
