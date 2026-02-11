@@ -3,7 +3,7 @@ import React from 'react';
 import {Application} from '../client/types';
 import {useConfiguration} from '../hooks/configuration';
 import {formatLink} from '../utils/application';
-import {FaCalendar, FaExternalLinkAlt, FaTrash} from 'react-icons/fa';
+import {FaCalendar, FaExternalLinkAlt, FaTrash, FaFire} from 'react-icons/fa';
 
 interface Props {
   app: Application;
@@ -18,14 +18,21 @@ const AppActions: React.FC<Props> = ({app, onDelete}) => {
       {!!conf?.sparkHistoryServerUrl && !!app.appId && (
         <IconButton size="sm" aria-label="History" variant="ghost" asChild>
           <ExLink title="History" target="_blank" href={`${conf.sparkHistoryServerUrl}/history/${app.appId}`}>
-            <FaExternalLinkAlt />
+            <FaCalendar />
+          </ExLink>
+        </IconButton>
+      )}
+      {!!app.sparkUiUrl && (
+        <IconButton size="sm" aria-label="Spark UI" variant="ghost" asChild>
+          <ExLink title="Spark UI" target="_blank" href={app.sparkUiUrl}>
+            <FaFire />
           </ExLink>
         </IconButton>
       )}
       {!!conf?.externalLogsUrlTemplate && !!app.appId && (
         <IconButton size="sm" aria-label="External logs" variant="ghost" asChild>
           <ExLink title="External logs" target="_blank" href={formatLink(conf.externalLogsUrlTemplate, app)}>
-            <FaCalendar />
+            <FaExternalLinkAlt />
           </ExLink>
         </IconButton>
       )}
