@@ -5,9 +5,7 @@ import {Box, Card, Flex, IconButton, Spinner, VStack} from '@chakra-ui/react';
 import StatementOutput from './StatementOutput';
 import {FaCheck, FaStop} from 'react-icons/fa';
 import {RiErrorWarningFill} from 'react-icons/ri';
-import {Prism as SyntaxHighlighter, SyntaxHighlighterProps} from 'react-syntax-highlighter';
-
-const SyntaxHighlighterComponent = SyntaxHighlighter as React.ComponentType<SyntaxHighlighterProps>;
+import {TypedSyntaxHighlighter} from '../../utils/syntaxHighlighter';
 
 const Statement: React.FC<{sessionId: string; statement: SessionStatement}> = ({sessionId, statement}) => {
   const {mutate: cancel, isPending: isCanceling} = useSessionStatementCancel(sessionId, statement.id);
@@ -31,7 +29,7 @@ const Statement: React.FC<{sessionId: string; statement: SessionStatement}> = ({
         <VStack align="stretch" gap={1}>
           <Flex gap={2}>
             <Box flex={1}>
-              <SyntaxHighlighterComponent language="python">{statement.code}</SyntaxHighlighterComponent>
+              <TypedSyntaxHighlighter language="python">{statement.code}</TypedSyntaxHighlighter>
               <StatementOutput output={statement.output} />
             </Box>
             <Box>

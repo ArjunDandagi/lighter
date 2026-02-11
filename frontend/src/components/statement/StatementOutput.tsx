@@ -1,12 +1,10 @@
 import React from 'react';
 import {SessionStatement} from '../../client/types';
-import {Prism as SyntaxHighlighter, SyntaxHighlighterProps} from 'react-syntax-highlighter';
-
-const SyntaxHighlighterComponent = SyntaxHighlighter as React.ComponentType<SyntaxHighlighterProps>;
+import {TypedSyntaxHighlighter} from '../../utils/syntaxHighlighter';
 
 const StatementOutput: React.FC<{output?: SessionStatement['output']}> = ({output}) => {
   if (output?.traceback) {
-    return <SyntaxHighlighterComponent>{output.traceback}</SyntaxHighlighterComponent>;
+    return <TypedSyntaxHighlighter>{output.traceback}</TypedSyntaxHighlighter>;
   }
 
   if (!output?.data) {
@@ -18,7 +16,7 @@ const StatementOutput: React.FC<{output?: SessionStatement['output']}> = ({outpu
     return null;
   }
 
-  return <SyntaxHighlighterComponent>{text}</SyntaxHighlighterComponent>;
+  return <TypedSyntaxHighlighter>{text}</TypedSyntaxHighlighter>;
 };
 
 export default StatementOutput;
