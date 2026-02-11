@@ -1,0 +1,1 @@
+alter table application add column spark_ui_url varchar;

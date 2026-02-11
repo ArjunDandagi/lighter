@@ -49,24 +49,29 @@ public class YarnBackend implements Backend {
     @Override
     public Optional<ApplicationInfo> getInfo(Application application) {
         return getYarnApplicationId(application)
-                .flatMap(id -> getState(id).map(state -> new ApplicationInfo(state, id)));
+                .flatMap(id -> {
+                    try {
+                        var yarnApp = client.getApplicationReport(fromString(id));
+                        var state = getState(yarnApp);
+                        var trackingUrl = yarnApp.getTrackingUrl();
+                        return state.map(s -> new ApplicationInfo(s, id, trackingUrl));
+                    } catch (YarnException | IOException e) {
+                        LOG.error("Unexpected error for appId: {}", id, e);
+                        return Optional.empty();
+                    }
+                });
     }
 
-    private Optional<ApplicationState> getState(String id) {
-        try {
-            var yarnApplication = client.getApplicationReport(fromString(id));
-            switch (yarnApplication.getFinalApplicationStatus()) {
-                case UNDEFINED:
-                    return Optional.of(ApplicationState.BUSY);
-                case SUCCEEDED:
-                    return Optional.of(ApplicationState.SUCCESS);
-                case FAILED:
-                    return Optional.of(ApplicationState.ERROR);
-                case KILLED:
-                    return Optional.of(ApplicationState.KILLED);
-            }
-        } catch (YarnException | IOException e) {
-            LOG.error("Unexpected error for appId: {}", id, e);
+    private Optional<ApplicationState> getState(ApplicationReport yarnApplication) {
+        switch (yarnApplication.getFinalApplicationStatus()) {
+            case UNDEFINED:
+                return Optional.of(ApplicationState.BUSY);
+            case SUCCEEDED:
+                return Optional.of(ApplicationState.SUCCESS);
+            case FAILED:
+                return Optional.of(ApplicationState.ERROR);
+            case KILLED:
+                return Optional.of(ApplicationState.KILLED);
         }
         return Optional.empty();
     }

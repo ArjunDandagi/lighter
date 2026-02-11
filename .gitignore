@@ -7,3 +7,4 @@ bin
 out
 generated
 lib
+package-lock.json
