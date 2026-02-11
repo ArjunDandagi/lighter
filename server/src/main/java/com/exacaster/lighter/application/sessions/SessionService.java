@@ -96,11 +96,13 @@ public class SessionService {
                 .orElseGet(() -> "session_" + UUID.randomUUID());
         var submitParams = params
                 .withNameAndFile(name, backend.getSessionJobResources());
+        var sparkUiUrl = appConfiguration.getUrl() + "/lighter/sessions/" + sessionId + "/jobs";
         var now = LocalDateTime.now();
         var entity = ApplicationBuilder.builder()
                 .setId(sessionId)
                 .setType(applicationType)
                 .setState(ApplicationState.NOT_STARTED)
+                .setSparkUiUrl(sparkUiUrl)
                 .setSubmitParams(submitParams)
                 .setCreatedAt(now)
                 .setContactedAt(now)
