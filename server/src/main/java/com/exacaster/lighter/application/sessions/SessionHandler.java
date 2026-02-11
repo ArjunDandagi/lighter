@@ -178,7 +178,7 @@ public class SessionHandler {
 
     private ApplicationInfo adjustApplicationInfo(ApplicationInfo info, boolean waiting) {
         var state = adjustState(waiting, info.state());
-        return new ApplicationInfo(state, info.applicationId());
+        return new ApplicationInfo(state, info.applicationId(), info.sparkUiUrl());
     }
 
     private boolean running(ApplicationState state) {

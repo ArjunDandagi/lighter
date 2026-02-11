@@ -65,7 +65,7 @@ class PermanentSessionHandlerTest extends Specification {
                 .build()
         1 * service.fetchAllPermanentSessions() >> permanentSessionMap(unhealthySession)
         1 * service.fetchOne(unhealthySession.id) >> Optional.of(unhealthySession)
-        backend.getInfo(unhealthySession) >> Optional.of(new ApplicationInfo(unhealthySession.state, unhealthySession.id))
+        backend.getInfo(unhealthySession) >> Optional.of(new ApplicationInfo(unhealthySession.state, unhealthySession.id, null))
 
         def expectedSession = ApplicationBuilder.builder(unhealthySession)
                 .setState(ApplicationState.STARTING)
@@ -104,7 +104,7 @@ class PermanentSessionHandlerTest extends Specification {
         1 * service.fetchAllPermanentSessions() >> permanentSessionMap(healthySessionFromYaml) + permanentSessionMap(unhealthySessionFromStorage)
         1 * service.fetchOne(configPermanentSession.id) >> Optional.of(healthySessionFromYaml)
         1 * service.fetchOne(unhealthySessionFromStorage.id) >> Optional.of(unhealthySessionFromStorage)
-        backend.getInfo(healthySessionFromYaml) >> Optional.of(new ApplicationInfo(healthySessionFromYaml.state, healthySessionFromYaml.id))
+        backend.getInfo(healthySessionFromYaml) >> Optional.of(new ApplicationInfo(healthySessionFromYaml.state, healthySessionFromYaml.id, null))
 
         when:
         handler.keepPermanentSessions()
@@ -135,7 +135,7 @@ class PermanentSessionHandlerTest extends Specification {
 
         1 * service.fetchAllPermanentSessions() >> permanentSessionMap(unhealthySessionFromStorage)
         1 * service.fetchOne(unhealthySessionFromStorage.id) >> Optional.of(unhealthySessionFromStorage)
-        backend.getInfo(unhealthySessionFromStorage) >> Optional.of(new ApplicationInfo(unhealthySessionFromStorage.state, unhealthySessionFromStorage.id))
+        backend.getInfo(unhealthySessionFromStorage) >> Optional.of(new ApplicationInfo(unhealthySessionFromStorage.state, unhealthySessionFromStorage.id, null))
 
         when:
         handler.keepPermanentSessions()

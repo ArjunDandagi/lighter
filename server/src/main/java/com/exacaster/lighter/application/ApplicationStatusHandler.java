@@ -76,7 +76,8 @@ public class ApplicationStatusHandler {
         var builder = ApplicationBuilder.builder(app)
                 .setState(info.state())
                 .setContactedAt(now)
-                .setAppId(info.applicationId());
+                .setAppId(info.applicationId())
+                .setSparkUiUrl(info.sparkUiUrl());
         
         if (info.state().isComplete()) {
             builder.setFinishedAt(now);

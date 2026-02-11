@@ -16,6 +16,7 @@ public class Application implements Entity {
     private final ApplicationState state;
     private final String appId;
     private final String appInfo;
+    private final String sparkUiUrl;
     private final String kind;
     // For Sparkmagic compatibility
     private final List<String> log = List.of();
@@ -27,13 +28,14 @@ public class Application implements Entity {
     private final boolean deleted;
 
     public Application(String id, ApplicationType type, ApplicationState state, String appId, String appInfo,
-                       SubmitParams submitParams,
+                       String sparkUiUrl, SubmitParams submitParams,
                        LocalDateTime createdAt, LocalDateTime contactedAt, LocalDateTime finishedAt, boolean deleted) {
         this.id = id;
         this.type = type;
         this.state = state;
         this.appId = appId;
         this.appInfo = appInfo;
+        this.sparkUiUrl = sparkUiUrl;
         this.submitParams = submitParams;
         this.createdAt = createdAt;
         this.contactedAt = contactedAt;
@@ -61,6 +63,10 @@ public class Application implements Entity {
 
     public String getAppInfo() {
         return appInfo;
+    }
+
+    public String getSparkUiUrl() {
+        return sparkUiUrl;
     }
 
     public List<String> getLog() {
@@ -99,7 +105,7 @@ public class Application implements Entity {
     }
 
     public Application withRedactedConf() {
-        return new Application(id, type, state, appId, appInfo, submitParams.withRedactedConf(), createdAt, contactedAt, finishedAt, deleted);
+        return new Application(id, type, state, appId, appInfo, sparkUiUrl, submitParams.withRedactedConf(), createdAt, contactedAt, finishedAt, deleted);
     }
 
     @Override
@@ -110,6 +116,7 @@ public class Application implements Entity {
                 .add("state=" + state)
                 .add("appId='" + appId + "'")
                 .add("appInfo='" + appInfo + "'")
+                .add("sparkUiUrl='" + sparkUiUrl + "'")
                 .add("submitParams=" + submitParams)
                 .add("createdAt=" + createdAt)
                 .add("contactedAt=" + contactedAt)

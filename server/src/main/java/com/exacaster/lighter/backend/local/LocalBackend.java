@@ -43,7 +43,7 @@ public class LocalBackend implements Backend {
     public Optional<ApplicationInfo> getInfo(Application application) {
         return handleForApp(application)
                 .flatMap(LocalApp::getState)
-                .map(it -> new ApplicationInfo(it, application.getId()));
+                .map(it -> new ApplicationInfo(it, application.getId(), null));
     }
 
     @Override

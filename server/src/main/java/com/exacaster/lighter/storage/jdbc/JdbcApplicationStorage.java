@@ -111,12 +111,14 @@ public class JdbcApplicationStorage implements ApplicationStorage, RowMapper<App
         var updated = handle.createUpdate("UPDATE application SET "
                         + "app_id=:app_id, "
                         + "app_info=:app_info, "
+                        + "spark_ui_url=:spark_ui_url, "
                         + "state=:state, "
                         + "contacted_at=:contacted_at, "
                         + "finished_at=:finished_at WHERE id=:id")
                 .bind("state", application.getState().name())
                 .bind("app_id", application.getAppId())
                 .bind("app_info", application.getAppInfo())
+                .bind("spark_ui_url", application.getSparkUiUrl())
                 .bind("contacted_at", application.getContactedAt())
                 .bind("finished_at", application.getFinishedAt())
                 .bind("id", application.getId())
@@ -133,13 +135,14 @@ public class JdbcApplicationStorage implements ApplicationStorage, RowMapper<App
         }
         handle
                 .createCall(
-                        "INSERT INTO application (id, type, state, app_id, app_info, submit_params, created_at, contacted_at, finished_at, deleted) "
-                                + "VALUES (:id, :type, :state, :app_id, :app_info, :submit_params, :created_at, :contacted_at, :finished_at, :deleted)")
+                        "INSERT INTO application (id, type, state, app_id, app_info, spark_ui_url, submit_params, created_at, contacted_at, finished_at, deleted) "
+                                + "VALUES (:id, :type, :state, :app_id, :app_info, :spark_ui_url, :submit_params, :created_at, :contacted_at, :finished_at, :deleted)")
                 .bind("id", application.getId())
                 .bind("type", application.getType().name())
                 .bind("state", application.getState().name())
                 .bind("app_id", application.getAppId())
                 .bind("app_info", application.getAppInfo())
+                .bind("spark_ui_url", application.getSparkUiUrl())
                 .bind("submit_params", conf)
                 .bind("created_at", application.getCreatedAt())
                 .bind("contacted_at", application.getContactedAt())
@@ -215,6 +218,7 @@ public class JdbcApplicationStorage implements ApplicationStorage, RowMapper<App
                 .setAppId(rs.getString("app_id"))
                 .setState(ApplicationState.valueOf(rs.getString("state")))
                 .setAppInfo(rs.getString("app_info"))
+                .setSparkUiUrl(rs.getString("spark_ui_url"))
                 .setSubmitParams(params)
                 .setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime())
                 .setContactedAt(contactedAt)

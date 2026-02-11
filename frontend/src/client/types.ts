@@ -4,6 +4,7 @@ export type Application = {
   createdAt: string;
   contactedAt: string;
   appId?: string;
+  sparkUiUrl?: string;
   submitParams: {
     name: string;
     file: string;
