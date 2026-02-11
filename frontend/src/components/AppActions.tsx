@@ -18,7 +18,7 @@ const AppActions: React.FC<Props> = ({app, onDelete}) => {
       {!!conf?.sparkHistoryServerUrl && !!app.appId && (
         <IconButton size="sm" aria-label="History" variant="ghost" asChild>
           <ExLink title="History" target="_blank" href={`${conf.sparkHistoryServerUrl}/history/${app.appId}`}>
-            <FaCalendar />
+            <FaExternalLinkAlt />
           </ExLink>
         </IconButton>
       )}
@@ -32,7 +32,7 @@ const AppActions: React.FC<Props> = ({app, onDelete}) => {
       {!!conf?.externalLogsUrlTemplate && !!app.appId && (
         <IconButton size="sm" aria-label="External logs" variant="ghost" asChild>
           <ExLink title="External logs" target="_blank" href={formatLink(conf.externalLogsUrlTemplate, app)}>
-            <FaExternalLinkAlt />
+            <FaCalendar />
           </ExLink>
         </IconButton>
       )}
