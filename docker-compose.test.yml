@@ -1,0 +1,31 @@
+services:
+  # Build the Lighter image
+  lighter-build:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SPARK_VERSION: "3.5.6"
+        HADOOP_VERSION: "3"
+    image: lighter:test
+    command: ["--help"]
+    profiles:
+      - build
+
+  # Kind cluster for Kubernetes testing
+  kind:
+    image: kindest/node:v1.29.2
+    privileged: true
+    ports:
+      - "6443:6443"
+      - "80:80"
+      - "443:443"
+    volumes:
+      - kind-data:/var/lib/containerd
+    environment:
+      - KIND_EXPERIMENTAL_DOCKER_NETWORK=kind
+    profiles:
+      - k8s
+
+volumes:
+  kind-data:
